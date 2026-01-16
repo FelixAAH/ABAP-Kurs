@@ -24,13 +24,19 @@ CLASS zcl_11_main_vehicles IMPLEMENTATION.
   " Instanziierungen
     out->write( zcl_11_vehicle=>number_of_vehicles ).
 
-    vehicle = new #( make = 'Porsche' model = '911'  ).
+    vehicle = new zcl_11_car( make = 'Porsche'
+                              model = '911'
+                              seats = 2 ). "Upcast
     append vehicle to vehicles.
 
-    vehicle = new #( make = 'MAN' model = 'TGX' ).
+    vehicle = new zcl_11_truck( make = 'MAN'
+                                model = 'TGX'
+                                cargo_in_tons = 40 ). "Upcast
     append vehicle to vehicles.
 
-    vehicle = new #( make = 'Skoda' model = 'Superb Combi' ).
+    vehicle = new zcl_11_car( make = 'Skoda'
+                              model = 'Superb Combi'
+                              seats = 4 ). " Upcast
     append vehicle to vehicles.
 
 
@@ -42,9 +48,9 @@ CLASS zcl_11_main_vehicles IMPLEMENTATION.
         vehicle->brake( 40 ).
         vehicle->accelerate( 100 ).
       CATCH zcx_11_value_too_high INTO DATA(x).
-        out->write( x->get_text( ) ).
+        out->write( | { x->get_text( ) } get kirked | ).
       ENDTRY.
-      out->write( | { vehicle->make }   { vehicle->model } | ).
+      out->write( vehicle->to_string( ) ).
     ENDLOOP.
 
   ENDMETHOD.

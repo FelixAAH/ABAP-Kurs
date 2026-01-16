@@ -1,6 +1,5 @@
 CLASS zcl_11_airplane DEFINITION
   PUBLIC
-  FINAL
   CREATE PUBLIC .
 
   PUBLIC SECTION.
@@ -14,6 +13,10 @@ CLASS zcl_11_airplane DEFINITION
     DATA empty_weight_in_tons TYPE i READ-ONLY.
 
     CLASS-DATA number_of_planes type i READ-only.
+
+    methods get_total_weight_in_tons
+         importing empty_weight_in_tons type i
+         RETURNING value(total_weight) TYPE i.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -45,6 +48,10 @@ CLASS zcl_11_airplane IMPLEMENTATION.
       raise exception new ZCX_ABAP_INITIAL_PARAMETER( | { empty_weight_in_tons } | ).
     endif.
 
+  ENDMETHOD.
+
+  METHOD get_total_weight_in_tons.
+    total_weight = empty_weight_in_tons * '1.1'.
   ENDMETHOD.
 
 ENDCLASS.

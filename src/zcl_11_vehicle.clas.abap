@@ -1,7 +1,7 @@
 CLASS zcl_11_vehicle DEFINITION
   PUBLIC
-  FINAL
   CREATE PUBLIC .
+
 
   PUBLIC SECTION.
       METHODS constructor importing make type string
@@ -14,11 +14,16 @@ CLASS zcl_11_vehicle DEFINITION
       methods brake
         importing value type i raising zcx_11_value_too_high.
 
+      methods to_string
+         RETURNING value(string) TYPE string.
+
       DATA make type string READ-ONLY.
       DATA model type string  READ-ONLY.
       DATA speed_in_kmh TYPE i READ-ONLY.
 
       CLASS-DATA number_of_vehicles type i READ-only.
+
+  PROTECTED SECTION.
 
   PRIVATE SECTION.
 
@@ -47,6 +52,10 @@ CLASS zcl_11_vehicle IMPLEMENTATION.
   METHOD constructor.
     me->make = make.
     me->model = model.
+  ENDMETHOD.
+
+  METHOD to_string.
+    string = | { make } { model } ({ speed_in_kmh }km/h) |.
   ENDMETHOD.
 
 ENDCLASS.
