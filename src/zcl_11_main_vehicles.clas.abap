@@ -21,6 +21,10 @@ CLASS zcl_11_main_vehicles IMPLEMENTATION.
     data vehicle type REF to zcl_11_vehicle.
     DATA vehicles type table of REF to zcl_11_vehicle.
 
+    DATA rental TYPE ref to zcl_11_rental.
+    DATA carrier type ref to zcl_11_carrier.
+    DATA partners type table of ref to zif_11_partner.
+
   " Instanziierungen
     out->write( zcl_11_vehicle=>number_of_vehicles ).
 
