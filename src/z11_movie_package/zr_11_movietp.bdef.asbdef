@@ -1,0 +1,67 @@
+managed implementation in class zbp_11_movietp unique;
+strict ( 2 );
+
+
+/* Behaviour Definition for Root Entity Booking */
+define behavior for ZR_11_MovieTP alias Movie
+persistent table ZABAP_MOVIE_A
+lock master
+authorization master ( instance )
+//etag master <field_name>
+{
+  create ( authorization : global );
+  update;
+  delete;
+  association _Ratings { create; }
+  field ( readonly, numbering : managed ) MovieUuid;
+  field (mandatory : create) Title, Genre, PublishingYear, RuntimeInMin;
+  field (mandatory : update) Title, Genre, PublishingYear, RuntimeInMin;
+  field ( readonly ) CreatedAt, CreatedBy, LastChangedAt, LastChangedBy;
+
+  validation ValidateGenre on save { create; }
+
+  action RateMovie parameter ZA_11_Rating; //result [1] $self;
+
+
+
+
+
+
+
+
+  mapping for ZABAP_MOVIE_A corresponding {
+  Genre = genre;
+  MovieUuid = movie_uuid;
+  ImageUrl = image_url;
+  PublishingYear = publishing_year;
+  Title = title;
+  RuntimeInMin = runtime_in_min;
+  }
+}
+
+/* Behaviour Definition for Child Entity Booking */
+define behavior for ZR_11_RatingTP alias Rating
+persistent table ZABAP_RATING_A
+lock dependent by _Movies
+authorization dependent by _Movies
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly, numbering : managed ) RatingUuid;
+  field ( readonly ) MovieUuid, RatingDate, UserName;
+  association _Movies;
+
+  determination DetermineRatingDate on save { create; }
+
+  determination DetermineUserName on save { create; }
+
+  mapping for ZABAP_RATING_A corresponding {
+  MovieUuid = movie_uuid;
+  Rating = rating;
+  Ratingdate = rating_date;
+  RatingUuid = rating_uuid;
+  UserName = user_name;
+  }
+
+}
